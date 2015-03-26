@@ -23,16 +23,17 @@ void setup() {
   size(FIELDS*GRID_SIZE, FIELDS*GRID_SIZE);
   grid = new GeoShape[FIELDS][FIELDS];
   shapes = new ArrayList<GeoShape>();
+  noLoop();
 }
 
 //************************************+
 
 void draw() {
-  noLoop();
   background(128);
   noFill();
 ellipse(width/2, height/2, 20, 20);  
 //  testInitialShapes();
+  drawPattern();
 }
 
 
@@ -42,9 +43,9 @@ void mouseReleased( ) {
   PVector pos = getCurrentPosition();  
   GeoShape shape = setUpShape(pos);
   initialShapes.addToList(shape);
-  drawPattern();
   //addToGrid(pos, shape);
   //createPattern();
+  redraw();
 }
 
 //************************************+
@@ -99,6 +100,9 @@ GeoShape setUpShape(PVector pos) {
 
 //************************************+
 void drawPattern(){
+  if(initialShapes.getShapes().size()==0){
+    return;
+  }
  int yDist = (int)initialShapes.getMaxDistances().y;
  int xDist = (int)initialShapes.getMaxDistances().x;
  if(yDist == 0) yDist = 1; 
