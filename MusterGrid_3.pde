@@ -13,7 +13,7 @@ final int OFFSET = 0;
 float rotationAngle = PI/2;
 boolean rotate = false;
 boolean hex = true;
-boolean hexFirst;
+boolean showInitial = true;
 boolean debug = false;
 InitialShapes initialShapes = new InitialShapes();
 
@@ -64,7 +64,7 @@ GeoShape setUpShape(PVector pos) {
     shape = new Hexagon(pos);
     if (initialHex == null) {
       initialHex  = new Hexagon(pos);
-     // println("new initial hex at: "+pos.x+":"+pos.y);
+      // println("new initial hex at: "+pos.x+":"+pos.y);
       initialHex.setRotationAngle(rotationAngle);
     }
     if (initialRect != null && initialRect.position.equals(pos )) {
@@ -93,7 +93,7 @@ void drawPattern() {
     return;
   }
   //  boolean drawChild = initialShapes.getShapes().size() > 2 ? true : false;
-  println("draw pattern");
+  fill(17, 130, 67);
   int yDist = (int)initialShapes.getMaxDistances().y/GRID_SIZE;  
   int xDist = (int)initialShapes.getMaxDistances().x/GRID_SIZE;
   yDist += 1;
@@ -113,12 +113,13 @@ void drawPattern() {
 }
 
 void drawInitialShapes() {
-  for (GeoShape s : initialShapes.getShapes ()) {
+  if (showInitial) {
+    noFill();
     stroke(240, 0, 230);
-    s.drawAtInitialPos();
+    for (GeoShape s : initialShapes.getShapes ()) {
+      s.drawAtInitialPos();
+    }
   }
-  
-  println("-------------------------------------------------");
 }
 
 //************************************+
@@ -194,9 +195,14 @@ public void testInitialShapes() {
 }
 
 
-void keyPressed(){
-  
-  if(key == 'r' || key == 'R'){
-   initialShapes.getShapes().clear();   
+void keyPressed() {
+
+  if (key == 'r' || key == 'R') {
+    initialShapes.getShapes().clear();
+  } else if (key == 'q' || key == 'Q') {
+    hex = !hex;
+  } else if (key == 'i' || key == 'I') {
+    showInitial = !showInitial;
   }
+  redraw();
 }
