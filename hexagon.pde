@@ -8,9 +8,9 @@ class Hexagon extends GeoShape {
   }
 
   void drawShape() {
-    println("entering draw hexagon method");
-    stroke(0, 0, 255);
-    strokeWeight(13 );
+//    println("entering draw hexagon method");
+    //stroke(0, 0, 255);
+    //strokeWeight(13 );
       beginShape( );
       vertex(-20, 0);
       vertex(-10, 20);

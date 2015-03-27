@@ -31,31 +31,20 @@ void setup() {
 void draw() {
   background(128);
   noFill();
-ellipse(width/2, height/2, 20, 20);  
-//  testInitialShapes();
+  ellipse(width/2, height/2, 20, 20);  
   drawPattern();
+  drawInitialShapes();
+  noLoop();
 }
-
 
 //************************************+
 
 void mouseReleased( ) {
   PVector pos = getCurrentPosition();  
   GeoShape shape = setUpShape(pos);
-  initialShapes.addToList(shape);
-  //addToGrid(pos, shape);
-  //createPattern();
+  initialShapes.addToList(shape);  
+  //drawInitialShapes();
   redraw();
-}
-
-//************************************+
-
-void keyPressed( ) {
-  if (key == 'r'|| key == 'R') {
-    rotate = !rotate;
-  } else if (key == 'q'|| key == 'Q') {
-    hex = !hex;
-  }
 }
 
 //************************************+
@@ -75,7 +64,7 @@ GeoShape setUpShape(PVector pos) {
     shape = new Hexagon(pos);
     if (initialHex == null) {
       initialHex  = new Hexagon(pos);
-      println("new initial hex at: "+pos.x+":"+pos.y);
+     // println("new initial hex at: "+pos.x+":"+pos.y);
       initialHex.setRotationAngle(rotationAngle);
     }
     if (initialRect != null && initialRect.position.equals(pos )) {
@@ -85,7 +74,7 @@ GeoShape setUpShape(PVector pos) {
     shape = new Rectangle(pos);
     if (initialRect == null) {
       initialRect = new Rectangle(pos);
-//      println("new initial rect at: "+pos.x+":"+pos.y);
+      //      println("new initial rect at: "+pos.x+":"+pos.y);
       initialRect.setRotationAngle(rotationAngle);
     }
     if (initialHex != null && initialHex.position.equals(pos )) {
@@ -99,25 +88,38 @@ GeoShape setUpShape(PVector pos) {
 }
 
 //************************************+
-void drawPattern(){
-  if(initialShapes.getShapes().size()==0){
+void drawPattern() {
+  if (initialShapes.getShapes().size()==0) {
     return;
   }
- int yDist = (int)initialShapes.getMaxDistances().y;
- int xDist = (int)initialShapes.getMaxDistances().x;
- if(yDist == 0) yDist = 1; 
- if(xDist == 0) xDist = 1; 
- 
- for(int y = 0; y < FIELDS; ){
-   for(int x = 0; x < FIELDS; ){
-     println("drawing @ "+(x*GRID_SIZE)+", "+(y*GRID_SIZE));
-     initialShapes.getShapes().get(0).draww(new PVector(x*GRID_SIZE, y*GRID_SIZE));
-     x += xDist;
-   }
-   y+= yDist;
- }
+  //  boolean drawChild = initialShapes.getShapes().size() > 2 ? true : false;
+  println("draw pattern");
+  int yDist = (int)initialShapes.getMaxDistances().y/GRID_SIZE;  
+  int xDist = (int)initialShapes.getMaxDistances().x/GRID_SIZE;
+  yDist += 1;
+  xDist += 1;
+  //if (yDist != 0 && xDist != 0) {
+  if (yDist == 0) yDist = 1; 
+  if (xDist == 0) xDist = 1; 
+
+  for (int y = 0; y < FIELDS; ) {
+    for (int x = 0; x < FIELDS; ) {
+      println("drawing @ "+(x*GRID_SIZE)+", "+(y*GRID_SIZE));
+      initialShapes.getShapes().get(0).draww(new PVector(x*GRID_SIZE, y*GRID_SIZE), true);
+      x += xDist;
+    }
+    y+= yDist;
+  }
 }
 
+void drawInitialShapes() {
+  for (GeoShape s : initialShapes.getShapes ()) {
+    stroke(240, 0, 230);
+    s.drawAtInitialPos();
+  }
+  
+  println("-------------------------------------------------");
+}
 
 //************************************+
 void addToGrid(PVector pos, GeoShape shape) {
@@ -134,7 +136,7 @@ void addToGrid(PVector pos, GeoShape shape) {
 
   updateInitialShape(shape);
 }
-//************************************+
+//*  ***********************************+
 
 void updateInitialShape(GeoShape shape) {
   if (shape.getClass() == initialHex.getClass()) {
@@ -188,5 +190,13 @@ public void testInitialShapes() {
   init.addToList(new Rectangle(new PVector(3, 2)));
   println("max x value "+init.getMaxDistances().x+" max y value "+init.getMaxDistances().y);
   init.addToList(new Hexagon(new PVector(7, 1)));
-  println("max x value "+init.getMaxDistances().x+" max y value "+init.getMaxDistances().y);   
+  println("max x value "+init.getMaxDistances().x+" max y value "+init.getMaxDistances().y);
+}
+
+
+void keyPressed(){
+  
+  if(key == 'r' || key == 'R'){
+   initialShapes.getShapes().clear();   
+  }
 }

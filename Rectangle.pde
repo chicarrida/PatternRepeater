@@ -9,10 +9,8 @@ class Rectangle extends GeoShape {
   }
 
   void drawShape() {  
-  println("entering draw rectangle method");  
-    rectMode(CENTER);
-    stroke(0, 0, 255);
-    strokeWeight(13 );
+  //println("entering draw rectangle method");  
+    rectMode(CENTER);    
     rect(0, 0, 40, 40);
   }
   void setRotationAngle(float angle) {

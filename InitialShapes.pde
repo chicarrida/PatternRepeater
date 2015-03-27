@@ -36,8 +36,9 @@ public class InitialShapes {
   }
 
   private void determineDistances() {
-    for (int i = 1; i < shapes.size (); i++) {
-      shapes.get(i).determineDistanceToParent(shapes.get(i-1 ));
+    for (int i = 0; i < shapes.size (); i++) {
+      if (i > 0)
+        shapes.get(i).determineDistanceToParent(shapes.get(i-1 ));
       if (i != shapes.size()-1) {
         shapes.get(i).setChild(shapes.get(i+1));
       }
@@ -56,17 +57,16 @@ public class InitialShapes {
     );
 
     maxDistances.x = (int)(tmpShapes.get(tmpShapes.size()-1).getPosition().x- tmpShapes.get(0).getPosition().x);
-       
+
 
     Collections.sort(tmpShapes, new Comparator<GeoShape>() {
       public int compare(GeoShape o1, GeoShape o2) {
-        
+
         return Integer.compare((int)o1.getPosition().y, (int)o2.getPosition().y);
       }
     }
     );
-    
-      maxDistances.y = (int)(tmpShapes.get(tmpShapes.size()-1).getPosition().y- tmpShapes.get(0).getPosition().y);
-    
+
+    maxDistances.y = (int)(tmpShapes.get(tmpShapes.size()-1).getPosition().y- tmpShapes.get(0).getPosition().y);
   }
 }

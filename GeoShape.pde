@@ -48,25 +48,38 @@ abstract class GeoShape implements Comparable<GeoShape> {
     }
   }
 
-  public void draww(PVector parentPos) {
+  public void draww(PVector parentPos, boolean drawChild) {
     println("drawwing shape @ "+parentPos.x+", "+parentPos.y);
     if (position!=null) {      
-      int x = (int)(parentPos.x);//.x + (distanceToParent != null ? distanceToParent.x : 0));
-      int y = (int)(parentPos.y);// + (distanceToParent != null ? distanceToParent.y : 0));
-      rectMode(CENTER);
-      pushMatrix();
-      translate(x, y);      
-      drawShape( );
-      popMatrix();
-      drawChild(new PVector(x, y));
+      int x = (int)(parentPos.x + (distanceToParent != null ? distanceToParent.x : 0));
+      int y = (int)(parentPos.y + (distanceToParent != null ? distanceToParent.y : 0));
+      stroke(0, 0, 255);
+      transformAndDraw(x, y);
+      if (drawChild)
+        drawChild(new PVector(x, y));
     }
+  }
+
+  void transformAndDraw(int x, int y) {      
+    pushMatrix();
+    translate(x, y);      
+    drawShape( );
+    popMatrix();
+  }
+
+  public void drawAtInitialPos() {
+    //println("draw initial at "+position.x+", "+position.y);
+    transformAndDraw((int)position.x, (int)position.y);
   }
 
   abstract void drawShape() ;
 
   protected void drawChild(PVector parentPos) { 
+    println("drawChild: "+child);
     if (child != null) {
-      child.draww(parentPos);
+      stroke(255, 255, 0);
+
+      child.draww(parentPos, true);
     }
   }
 
