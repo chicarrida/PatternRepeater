@@ -8,12 +8,9 @@ class Hexagon extends GeoShape {
   }
 
   void drawShape() {
-    if (position != null) {
-      int x = (int)position.x;
-      int y = (int) position.y;
-      pushMatrix();
-      translate(x, y);
-      rotate(rotationAngle);
+//    println("entering draw hexagon method");
+    //stroke(0, 0, 255);
+    //strokeWeight(13 );
       beginShape( );
       vertex(-20, 0);
       vertex(-10, 20);
@@ -23,11 +20,10 @@ class Hexagon extends GeoShape {
       vertex(-10, -20);
       vertex(-20, 0);
       endShape();
-      popMatrix();
-    }
   }
+
 
   void setRotationAngle(float angle) {
     rotationAngle = angle;
-  }
+  }  
 }
